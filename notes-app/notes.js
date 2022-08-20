@@ -1,49 +1,71 @@
 const fs=require('fs');
+const chalk=require('chalk');
 const getNotes=() => 'Your Notes...';
 
 
 const addNote=(title,body)=>
 {
     const notes=loadNotes();
-    const duplicateNotes=notes.filter((note)=>
-    {
-        return note.title===title;
-    })
+    const duplicateNote=notes.find((note)=> note.title===title);
 
 
-    if(!duplicateNotes.length)
+    if(!duplicateNote)
     {
         notes.push({
             title:title,
             body:body,
         })
         saveNotes(notes);
-        console.log('New Note added!');
+        console.log(chalk.green.inverse('New Note added!'));
 
     }
     else
-    console.log("Title of the note already taken!");
+    console.log(chalk.red.inverse("Title of the note already taken!"));
 }
 
 
-const removeNote=(title)=>
+const removeNote=title=>
 {
     const notes=loadNotes();
-    const findTitle=notes.filter(note=>{
-        return note.title===title;
-    })
+    const findTitle=notes.filter(note=> note.title===title);
+    
     if(findTitle.length)
     {
-        const index=notes.findIndex((obj)=>{
+        const index=notes.findIndex(obj=>{
             return obj.title===title;
         })
         notes.splice(index,1);
         saveNotes(notes);
-        console.log("Note removed successfully!");
+        console.log(chalk.inverse.green("Note removed successfully!"));
     }
     else
-    console.log("The title could not be found!");
+    console.log(chalk.inverse.red("The title could not be found!"));
 }
+
+
+const listNotes=()=>
+{
+    const notes=loadNotes();
+    console.log(chalk.inverse('Your notes'))
+    notes.forEach(note=> 
+        {
+            console.log(note.title);
+        });
+}
+
+const readNote=title =>
+{
+    const notes=loadNotes();
+    const findNote=notes.find(note=> note.title===title);
+    if(findNote)
+    {
+        console.log(chalk.inverse(findNote.title));
+        console.log(findNote.body);
+    }
+    else
+    console.log(chalk.red.inverse('Note not found!'));
+}
+
 
 const loadNotes=() =>
 {
@@ -69,4 +91,6 @@ module.exports={
     getNotes:getNotes,
     addNote:addNote,
     removeNote:removeNote,
+    listNotes:listNotes,
+    readNote:readNote,
 };

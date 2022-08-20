@@ -1,6 +1,5 @@
 const yargs=require('yargs');
 const notes=require('./notes');
-const chalk=require('chalk');
 
 //Customising the yargs version
 yargs.version('1.1.0'); 
@@ -51,16 +50,9 @@ yargs.command({
 yargs.command({
     command:'list',
     describe:'listing the note',
-    builder:{
-        title:{
-            describe:"This is title!",
-            demandOption:true,
-            type:'string',
-        },
-    },
     handler: ()=> 
     {
-        console.log('Title: ',argv.title);
+        notes.listNotes();
     }
 })
 
@@ -77,9 +69,9 @@ yargs.command({
             type:'string',
         },
     },
-    handler: ()=> 
+    handler: (argv)=> 
     {
-        console.log('Title: ',argv.title);
+        notes.readNote(argv.title);
     }
 })
 
