@@ -40,9 +40,9 @@ yargs.command({
             type:'string',
         },
     },
-    handler: ()=> 
+    handler: (argv)=> 
     {
-        console.log('Title: ',argv.title);
+        notes.removeNote(argv.title);
     }
 })
 

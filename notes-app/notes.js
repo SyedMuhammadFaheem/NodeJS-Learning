@@ -10,7 +10,7 @@ const addNote=(title,body)=>
         return note.title===title;
     })
 
-    
+
     if(!duplicateNotes.length)
     {
         notes.push({
@@ -23,6 +23,26 @@ const addNote=(title,body)=>
     }
     else
     console.log("Title of the note already taken!");
+}
+
+
+const removeNote=(title)=>
+{
+    const notes=loadNotes();
+    const findTitle=notes.filter(note=>{
+        return note.title===title;
+    })
+    if(findTitle.length)
+    {
+        const index=notes.findIndex((obj)=>{
+            return obj.title===title;
+        })
+        notes.splice(index,1);
+        saveNotes(notes);
+        console.log("Note removed successfully!");
+    }
+    else
+    console.log("The title could not be found!");
 }
 
 const loadNotes=() =>
@@ -48,4 +68,5 @@ const saveNotes=(notes)=>{
 module.exports={
     getNotes:getNotes,
     addNote:addNote,
+    removeNote:removeNote,
 };
