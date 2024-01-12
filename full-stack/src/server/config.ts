@@ -7,4 +7,4 @@ export const MONGODB_URI =
   env.MONGODB_URI ?? "mongodb://localhost:27017";
 export const DATABASE = env.DATABASE ?? "local";
 
-export default { PORT, HOST, SERVER_URL, MONGODB_URI, DATABASE };
+export default { PORT, HOST, SERVER_URL, MONGODB_URI, DATABASE};
