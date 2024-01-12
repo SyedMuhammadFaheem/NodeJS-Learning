@@ -1,6 +1,7 @@
 import express from "express";
 
 const app= express()
+app.use(express.json())
 const PORT=process.env.PORT || 3000
 
 const users = [
@@ -17,12 +18,11 @@ const products = [
     {id:1,productName:"Chicken Breasts", price:14.99}
 ]
 
-app.get("/",(request,response,next)=>{
+app.get("/",(request,response)=>{
     response.status(200).send({msg:"Hello GET API!"})
-    next()
 })
 
-app.get("/api/users",(request,response,next)=>{
+app.get("/api/users",(request,response)=>{
     const {filter,value}= request.query
     if(filter && value)
     {
@@ -32,14 +32,13 @@ app.get("/api/users",(request,response,next)=>{
         response.send(filteredUser)
     }
     response.send(users)
-    next()
 })
 
-app.get("/api/products",(request,response,next)=>{
+app.get("/api/products",(request,response)=>{
     response.send(products)
 })
 
-app.get("/api/users/:id",(request,response,next)=>{
+app.get("/api/users/:id",(request,response)=>{
     const id= parseInt(request.params.id)
     if(isNaN(id)) response.status(400).send({msg:"Bad request. Enter a numeric ID"})
 
@@ -47,6 +46,12 @@ app.get("/api/users/:id",(request,response,next)=>{
     if(!findUser) response.sendStatus(400)
 
     response.send(findUser)
+})
+
+app.post("/api/users",(request,response)=>{
+    const newUser= {id: users.length+1, ...request.body}
+    users.push(newUser)
+    response.status(201).send({msg:"User created!", user: newUser})
 })
 
 app.listen(PORT, ()=>{
