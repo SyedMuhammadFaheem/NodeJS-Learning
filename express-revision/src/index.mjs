@@ -79,6 +79,19 @@ app.patch("/api/users/:id",(request,response)=>{
     response.status(200).send({msg:"User specific contents updated!"})
 })
 
+app.delete("/api/users/:id",(request,response)=>{
+    const {params:{id}}=request
+    const parsedId= parseInt(id)
+    if(isNaN(parsedId)) response.send(400)
+
+    const findUserIndex= users.findIndex((user)=>user.id===parsedId)
+    if(findUserIndex==-1) response.status(400).send({msg:"User not found!"})
+
+    users.splice(findUserIndex,1)
+    response.status(200).send({msg:"User deleted!"})
+
+})
+
 app.listen(PORT, ()=>{
     console.log(`Server listening at port: ${PORT}`)
 })
