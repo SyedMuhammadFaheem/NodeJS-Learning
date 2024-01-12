@@ -1,4 +1,5 @@
 import express from "express";
+import { findSourceMap } from "module";
 
 const app= express()
 app.use(express.json())
@@ -60,11 +61,22 @@ app.put("/api/users/:id",(request,response)=>{
     if(isNaN(parsedId)) response.send(400)
 
     const findUserIndex= users.findIndex((user)=>user.id===parsedId)
-    console.log(id)
     if(findUserIndex==-1) response.status(400).send({msg:"User not found!"})
     users[findUserIndex]={ id: parsedId, ...body}
     response.status(200).send({msg:"User updated!"})
 
+})
+
+app.patch("/api/users/:id",(request,response)=>{
+    const {body, params:{id}}= request
+    const parsedId= parseInt(id)
+    if(isNaN(parsedId)) response.send(400)
+
+    const findUserIndex= users.findIndex((user)=>user.id===parsedId)
+    if(findUserIndex==-1) response.status(400).send({msg:"User not found!"})
+
+    users[findUserIndex]={...users[findUserIndex],...body}
+    response.status(200).send({msg:"User specific contents updated!"})
 })
 
 app.listen(PORT, ()=>{
