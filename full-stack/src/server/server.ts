@@ -1,11 +1,14 @@
 import express from "express";
 import os from "node:os";
 import config from "./config";
+import router from "./api-router";
 
 const server = express();
 
 server.use(express.static("dist"));
 server.set("view engine", "ejs");
+
+server.use("/api", router);
 
 server.use("/", (req, res) => {
   res.render("index", {
