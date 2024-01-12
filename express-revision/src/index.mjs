@@ -6,7 +6,11 @@ const PORT=process.env.PORT || 3000
 const users = [
     {id:1,username:"faheem",displayName:"Faheem"},
     {id:2,username:"umair",displayName:"Umair"},
-    {id:3,username:"rabia",displayName:"Rabia"}
+    {id:3,username:"rabia",displayName:"Rabia"},
+    {id:4,username:"tina",displayName:"Tina"},
+    {id:5,username:"jason",displayName:"Jason"},
+    {id:6,username:"henry",displayName:"Henry"},
+    {id:7,username:"marilyn",displayName:"Marilyn"},
 ]
 
 const products = [
@@ -19,6 +23,14 @@ app.get("/",(request,response,next)=>{
 })
 
 app.get("/api/users",(request,response,next)=>{
+    const {filter,value}= request.query
+    if(filter && value)
+    {
+        const filteredUser= users.filter((user)=>
+            user[filter].includes(value)
+        )
+        response.send(filteredUser)
+    }
     response.send(users)
     next()
 })
